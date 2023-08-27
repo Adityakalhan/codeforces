@@ -8,9 +8,6 @@ def vector_sum(vector) :
         print("YES")
     else :
         print("NO")
-
-
-
 n = int(input())
 vectors = []
 for i in range(n) :
