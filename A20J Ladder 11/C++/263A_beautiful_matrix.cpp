@@ -29,51 +29,27 @@ int recursion(int r, int c, set<pair<int,int>> &visited, vector<vector<int>> &ma
     
     visited.insert(make_pair(r,c));
     
-    int mini = 1e9;
+    int mini = INT_MAX;
+    int dr[] = {-1, 1, 0, 0};  // delta row (up, down, left, right)
+    int dc[] = {0, 0, -1, 1};  // delta col (up, down, left, right)
     
-    // Move Up
-    if (r >= 1) {
-        swap(matrix[r][c], matrix[r-1][c]);
-        int temp = recursion(r - 1, c, visited, matrix);
-        if(temp != INT_MAX) {
-            mini = min(mini, temp + 1);
+    for (int i = 0; i < 4; i++) {
+        int newRow = r + dr[i];
+        int newCol = c + dc[i];
+        
+        if (newRow >= 0 && newRow < 5 && newCol >= 0 && newCol < 5) {
+            swap(matrix[r][c], matrix[newRow][newCol]);
+            int temp = recursion(newRow, newCol, visited, matrix);
+            if (temp != INT_MAX) {
+                mini = min(mini, temp + 1);
+            }
+            swap(matrix[r][c], matrix[newRow][newCol]);
         }
-        swap(matrix[r][c], matrix[r-1][c]);
-    }
-
-    // Move Down
-    if (r < 4) {
-        swap(matrix[r][c], matrix[r+1][c]);
-        int temp = recursion(r + 1, c, visited, matrix);
-        if(temp != INT_MAX) {
-            mini = min(mini, temp + 1);
-        }
-        swap(matrix[r][c], matrix[r+1][c]);
-    }
-
-    // Move Left
-    if (c >= 1) {
-        swap(matrix[r][c], matrix[r][c-1]);
-        int temp = recursion(r, c-1, visited, matrix);
-        if(temp != INT_MAX) {
-            mini = min(mini, temp + 1);
-        }
-        swap(matrix[r][c], matrix[r][c-1]);
-    }
-
-    // Move Right
-    if (c < 4) {
-        swap(matrix[r][c], matrix[r][c+1]);
-        int temp = recursion(r, c+1, visited, matrix);
-        if(temp != INT_MAX) {
-            mini = min(mini, temp + 1);
-        }
-        swap(matrix[r][c], matrix[r][c+1]);
     }
     
     visited.erase(make_pair(r,c));
 
-    return (mini == 1e9) ? INT_MAX : mini;
+    return mini;
 }
 vector<vector<int>> take_input(){
     vector<vector<int>> vect;
@@ -92,7 +68,6 @@ vector<vector<int>> take_input(){
 int main(){
     vector<vector<int>> matrix;
     pair<int,int> p;
-
     matrix = take_input();
     p = get_row_col(matrix);
     set<pair<int,int>> visited;
