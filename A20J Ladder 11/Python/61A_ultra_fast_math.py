@@ -7,9 +7,6 @@ def final(s1,s2) :
             res += "1"
     return res
 
-
-
-
 n1 = input()
 n2 = input()
 print(final(n1,n2))
